@@ -59,27 +59,9 @@ services:
         - rabbitmq
       links:
         - rabbitmq
-    ch_server:
-      image: yandex/clickhouse-server
-      restart: always
+    clickhouse:
+      image: yandex/clickhouse-server:18.10
       ports:
         - "8123:8123"
       volumes:
-        - ./docker/clickhouse/dbfiles:/var/lib/clickhouse
-      networks:
-        - ch_ntw
-    ch_client:
-      image: yandex/clickhouse-client
-      restart: always
-      entrypoint:
-        - /bin/sleep
-      command:
-        - infinity
-      networks:
-        - ch_ntw
-networks:
-  ch_ntw:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 10.222.1.0/24
+        - ./docker/clickhouse/data:/var/lib/clickhouse
